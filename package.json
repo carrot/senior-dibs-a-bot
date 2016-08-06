@@ -1,0 +1,16 @@
+{
+  "name": "OGDibs",
+  "version": "0.0.1",
+  "description": "OGDibs G checks your status and decides if your claim to fame is legit. Otherwise you get shamed real quick.",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava",
+    "start": "node index.js"
+  },
+  "author": "2020deception",
+  "license": "MIT",
+  "dependencies": {
+    "botkit": "0.0.15",
+    "jfs": "^0.2.6"
+  }
+}
