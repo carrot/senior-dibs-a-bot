@@ -5,7 +5,7 @@ var NoLimit = require('nolimit')
 var nolimit = new NoLimit({ filename: 'sirdibsabot'})
 
 var token = process.env.SLACK_TOKEN
-
+var postChannel = 'C0AAFTJNS'
 var controller = Botkit.slackbot({
   retry: Infinity,
   debug: false
@@ -33,28 +33,25 @@ controller.on('file_comment_added', checkStatus)
 
 // reply to a direct message
 controller.on('direct_message', function (bot, message) {
-  console.log(message)
   if (message.user == 'U09NPAG11' || message.user == 'U024H9QHP') {
     if (message.text.toUpperCase().indexOf('RESET') > -1) {
       nolimit = new NoLimit({ filename: 'sirdibsabot'})
       bot.say({
         text: 'All Disabilities have been reset.',
-        channel: 'C0AAFTJNS'
+        channel: postChannel
       })
     }
+  }
+  if (validateUserDibsabilityDM(message)) {
+    bot.say({
+      text: '<@' + message.user + '>, You sure can dibs-a-bot. Dont forget you only get one. Once thats gone you must wait for the boss to give you the green light.',
+      channel: postChannel
+    })
   } else {
-    console.log('touched');
-    if (validateUserDibsabilityDM(message)) {
-      bot.say({
-        text: '<@' + message.user + '>, You sure can dibs-a-bot. Dont forget you only get one. Once thats gone you must wait for the boss to give you the green light.',
-        channel: 'C0AAFTJNS'
-      })
-    } else {
-      bot.say({
-        text: 'Sorry <@' + message.user + '> you cant dibs-a-bot until the boss says so, and right now he says no.',
-        channel: 'C0AAFTJNS'
-      })
-    }
+    bot.say({
+      text: 'Sorry <@' + message.user + '> you cant dibs-a-bot until the boss says so, and right now he says no.',
+      channel: postChannel
+    })
   }
 })
 
@@ -71,31 +68,26 @@ function validateItemDibsability (message) {
 }
 
 function checkStatus (bot, message, whatElse, more) {
-  console.log(message)
   if (validateItemDibsability(message)) {
-    console.log('unclaimed item')
     if (message.comment.comment.toUpperCase().indexOf('DIBS') > -1) {
       if (validateUserDibsability(message)) {
-        console.log('unclaimed user')
         nolimit.stash({ key: message.file_id, value: 1 })
         nolimit.stash({ key: message.comment.user, value: 1 })
         bot.say({
           text: 'Break out the BLUE LABEL!!! <@' + message.comment.user + '> just won something of great value. You may need to hire private security to guard your treasure. I wish you the best.',
-          channel: 'C0AAFTJNS'
+          channel: postChannel
         })
       } else {
-        console.log('claimed user')
         bot.say({
           text: 'Sorry <@' + message.comment.user + '>, you cant dibs-a-bot until the boss says so, and right now he says no.',
-          channel: 'C0AAFTJNS'
+          channel: postChannel
         })
       }
     }
   } else {
-    console.log('claimed item')
     bot.say({
       text: 'Sorry <@' + message.comment.user + '>, this item is claimed.',
-      channel: 'C0AAFTJNS'
+      channel: postChannel
     })
   }
 }
