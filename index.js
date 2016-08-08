@@ -43,7 +43,8 @@ controller.on('direct_message', function (bot, message) {
       })
     }
   } else {
-    if (validateUserDibsability(message)) {
+    console.log('touched');
+    if (validateUserDibsabilityDM(message)) {
       bot.say({
         text: '<@' + message.user + '>, You sure can dibs-a-bot. Dont forget you only get one. Once thats gone you must wait for the boss to give you the green light.',
         channel: 'C0AAFTJNS'
@@ -59,6 +60,10 @@ controller.on('direct_message', function (bot, message) {
 
 function validateUserDibsability (message) {
   return (!nolimit.fetch({ key: message.comment.user }) || nolimit.fetch({ key: message.comment.user }) === 0)
+}
+
+function validateUserDibsabilityDM (message) {
+  return (!nolimit.fetch({ key: message.user }) || nolimit.fetch({ key: message.user }) === 0)
 }
 
 function validateItemDibsability (message) {
