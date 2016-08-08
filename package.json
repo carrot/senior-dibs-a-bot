@@ -11,6 +11,8 @@
   "license": "MIT",
   "dependencies": {
     "botkit": "0.0.15",
-    "jfs": "^0.2.6"
+    "jfs": "^0.2.6",
+    "nolimit": "0.0.2",
+    "dotenv": "3.10.3"
   }
 }
