@@ -30,19 +30,13 @@ if (token) {
 // connect the bot to a stream of messages
 controller.on('file_comment_added', checkStatus)
 
+controller.on('direct_mention', function (bot, message) {
+  handleDirectAction(bot, message)
+})
+
 // reply to a direct message
 controller.on('direct_message', function (bot, message) {
-  if (message.user == 'U09NPAG11' || message.user == 'U024H9QHP') {
-    if (message.text.toUpperCase().indexOf('RESET') > -1) {
-      nolimit = new NoLimit({ filename: 'sirdibsabot'})
-      sendMessage(bot, 'All Dibsabilities have been reset.')
-    }
-  }
-  if (validateUserDibsabilityDM(message)) {
-    sendMessage(bot, '<@' + message.user + '>, You sure can dibs-a-bot. Dont forget you only get one. Once thats gone you must wait for the boss to give you the green light.')
-  } else {
-    sendMessage(bot, 'Sorry <@' + message.user + '> you cant dibs-a-bot until the boss says so, and right now he says no.')
-  }
+  handleDirectAction(bot, message)
 })
 
 function checkStatus (bot, message, whatElse, more) {
@@ -66,6 +60,20 @@ function sendMessage (bot, text) {
     text: text,
     channel: postChannel
   })
+}
+
+function handleDirectAction (bot, message) {
+  if (message.user == 'U09NPAG11' || message.user == 'U024H9QHP') {
+    if (message.text.toUpperCase().indexOf('RESET') > -1) {
+      nolimit = new NoLimit({ filename: 'sirdibsabot'})
+      sendMessage(bot, 'All Dibsabilities have been reset.')
+    }
+  }
+  if (validateUserDibsabilityDM(message)) {
+    sendMessage(bot, '<@' + message.user + '>, You sure can dibs-a-bot. Dont forget you only get one. Once thats gone you must wait for the boss to give you the green light.')
+  } else {
+    sendMessage(bot, 'Sorry <@' + message.user + '> you cant dibs-a-bot until the boss says so, and right now he says no.')
+  }
 }
 
 function validateUserDibsability (message) {
