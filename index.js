@@ -35,7 +35,7 @@ controller.on('direct_message', function (bot, message) {
   if (message.user == 'U09NPAG11' || message.user == 'U024H9QHP') {
     if (message.text.toUpperCase().indexOf('RESET') > -1) {
       nolimit = new NoLimit({ filename: 'sirdibsabot'})
-      sendMessage(bot, 'All Disabilities have been reset.')
+      sendMessage(bot, 'All Dibsabilities have been reset.')
     }
   }
   if (validateUserDibsabilityDM(message)) {
