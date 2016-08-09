@@ -63,7 +63,7 @@ function checkStatus (bot, message, whatElse, more) {
 
 function sendMessage (bot, text) {
   bot.say({
-    text: message
+    text: message,
     channel: postChannel
   })
 }
