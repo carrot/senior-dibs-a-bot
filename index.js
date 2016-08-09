@@ -1,6 +1,7 @@
 var path = require('path')
 var Botkit = require('botkit')
 var Store = require('jfs')
+var beep = require('beepboop-botkit')
 var NoLimit = require('nolimit')
 var nolimit = new NoLimit({ filename: 'sirdibsabot'})
 var token = process.env.SLACK_TOKEN
