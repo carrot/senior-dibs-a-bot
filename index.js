@@ -45,7 +45,7 @@ function checkStatus (bot, message, whatElse, more) {
       if (validateUserDibsability(message)) {
         nolimit.stash({ key: message.file_id, value: 1 })
         nolimit.stash({ key: message.comment.user, value: 1 })
-        sendMessage(bot, 'Break out the BLUE LABEL!!! <@' + message.comment.user + '> just won something of great value. You may need to hire private security to guard your treasure. I wish you the best.')
+        sendMessage(bot, randomWinningPhrase(message))
       } else {
         sendMessage(bot, 'Sorry <@' + message.comment.user + '>, you cant dibs-a-bot until the boss says so, and right now he says no.')
       }
@@ -53,6 +53,18 @@ function checkStatus (bot, message, whatElse, more) {
   } else {
     sendMessage(bot, 'Sorry <@' + message.comment.user + '>, this item is claimed.')
   }
+}
+
+function randomWinningPhrase (ogMessage) {
+  var phrases = [
+    'Break out the BLUE LABEL!!! <@' + message.comment.user + '> is the winner.',
+    'Congrats <@' + message.comment.user + '>, <@U024H9QHP> doesn’t want something anymore and you\'re closer than a trash can.',
+    'Hey Hey Hey <@' + message.comment.user + '>! Enjoy the trash that someone else didn\'t want.',
+    'Well aren\t you lucky <@' + message.comment.user + '>! You\'ve won at thing of semi-value.',
+    'Whoa <@' + message.comment.user + '>!, thank you for slightly reducing the Fire Hazard around <@U024H9QHP>'
+  ]
+  var index = Math.floor((Math.random() * 4) + 0)
+  return phrases[index]
 }
 
 function sendMessage (bot, text) {
@@ -69,10 +81,10 @@ function handleDirectAction (bot, message) {
       sendMessage(bot, 'All Dibsabilities have been reset.')
     }
   }
-  if (validateUserDibsabilityDM(message)) {
-    sendMessage(bot, '<@' + message.user + '>, You sure can dibs-a-bot. Dont forget you only get one. Once thats gone you must wait for the boss to give you the green light.')
+  if (validateUserDibsabilityDM (message)) {
+    sendMessage(bot, '<@' + message.user + '>, you sure can dibs-a-bot. Dont forget you only get one. Once thats gone you must wait for the boss to give you the green light.')
   } else {
-    sendMessage(bot, 'Sorry <@' + message.user + '> you cant dibs-a-bot until the boss says so, and right now he says no.')
+    sendMessage(bot, 'Sorry <@' + message.user + '>, you cant dibs-a-bot until the boss says so, and right now he says no.')
   }
 }
 
