@@ -7,6 +7,9 @@ var NoLimit = require('nolimit')
 var nolimit = new NoLimit({ filename: 'sirdibsabot'})
 var token = process.env.SLACK_TOKEN
 var postChannel = process.env.MAIN_CHANNEL
+var admin1 = process.env.ADMIN1
+var admin2 = process.env.ADMIN2
+var filename = process.env.FILENAME
 var controller = Botkit.slackbot({
   retry: Infinity,
   debug: false
@@ -60,10 +63,10 @@ function checkStatus (bot, message, whatElse, more) {
 function randomWinningPhrase (message) {
   var phrases = [
     'Break out the BLUE LABEL!!! <@' + message.comment.user + '> is the winner.',
-    'Congrats <@' + message.comment.user + '>, ' + process.env.ADMIN1 + ' doesn’t want something anymore and you\'re closer than a trash can.',
+    'Congrats <@' + message.comment.user + '>, ' + admin1 + ' doesn’t want something anymore and you\'re closer than a trash can.',
     'Hey Hey Hey <@' + message.comment.user + '>! Enjoy the trash that someone else didn\'t want.',
-    'Well aren\t you lucky <@' + message.comment.user + '>! You\'ve won at thing of semi-value.',
-    'Whoa <@' + message.comment.user + '>!, thank you for slightly reducing the Fire Hazard around ' + process.env.ADMIN1 
+    'Well aren\'t you lucky <@' + message.comment.user + '>! You\'ve won at thing of semi-value.',
+    'Whoa <@' + message.comment.user + '>!, thank you for slightly reducing the Fire Hazard around ' + admin1
   ]
   var index = Math.floor((Math.random() * 4) + 0)
   return phrases[index]
@@ -77,9 +80,9 @@ function sendMessage (bot, text) {
 }
 
 function handleDirectAction (bot, message) {
-  if (message.user == process.env.ADMIN1 || message.user == process.env.ADMIN2) {
+  if (message.user == admin1 || message.user == admin2) {
     if (message.text.toUpperCase().indexOf('RESET') > -1) {
-      nolimit = new NoLimit({ filename: process.env.FILENAME})
+      nolimit = new NoLimit({ filename: filename})
       sendMessage(bot, 'All Dibsabilities have been reset.')
     }
   }
