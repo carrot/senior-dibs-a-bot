@@ -4,22 +4,26 @@ var Botkit = require('botkit')
 var Store = require('jfs')
 var beep = require('beepboop-botkit')
 var NoLimit = require('nolimit')
-var nolimit = new NoLimit({ filename: 'sirdibsabot'})
-var token = process.env.SLACK_TOKEN
-var postChannel = process.env.MAIN_CHANNEL
-var admin1 = process.env.ADMIN1
-var admin2 = process.env.ADMIN2
-var filename = process.env.FILENAME
+var nolimit = new NoLimit({ filename: process.env.FILE_NAME })
+var params = {
+  token: process.env.SLACK_TOKEN,
+  postChannel: process.env.MAIN_CHANNEL,
+  admin: {
+    primary: process.env.ADMIN_PRIMARY_USER,
+    secondary: process.env.ADMIN_SECONDARY_USER
+  },
+  fileName: process.env.FILE_NAME
+}
 var controller = Botkit.slackbot({
   retry: Infinity,
   debug: false
 })
 
 // Assume single team mode if we have a SLACK_TOKEN
-if (token) {
+if (params.token) {
   console.log('Starting in single-team mode')
   controller.spawn({
-    token: token
+    token: params.token
   }).startRTM(function (err, bot, payload) {
     if (err) {
       throw new Error(err)
@@ -52,21 +56,21 @@ function checkStatus (bot, message, whatElse, more) {
         nolimit.stash({ key: message.comment.user, value: 1 })
         sendMessage(bot, randomWinningPhrase(message))
       } else {
-        sendMessage(bot, 'Sorry <@' + message.comment.user + '>, you cant dibs-a-bot until the boss says so, and right now he says no.')
+        sendMessage(bot, `Sorry <@${message.comment.user}>, you cant dibs-a-bot until the boss says so, and right now he says no.`)
       }
     }
   } else {
-    sendMessage(bot, 'Sorry <@' + message.comment.user + '>, this item is claimed.')
+    sendMessage(bot, `Sorry <@${message.comment.user}>, this item is claimed.`)
   }
 }
 
 function randomWinningPhrase (message) {
   var phrases = [
-    'Break out the BLUE LABEL!!! <@' + message.comment.user + '> is the winner.',
-    'Congrats <@' + message.comment.user + '>, ' + admin1 + ' doesn’t want something anymore and you\'re closer than a trash can.',
-    'Hey Hey Hey <@' + message.comment.user + '>! Enjoy the trash that someone else didn\'t want.',
-    'Well aren\'t you lucky <@' + message.comment.user + '>! You\'ve won at thing of semi-value.',
-    'Whoa <@' + message.comment.user + '>!, thank you for slightly reducing the Fire Hazard around ' + admin1
+    `Break out the BLUE LABEL!!! <@${message.comment.user}> is the winner.`,
+    `Congrats <@${message.comment.user}>, <@${params.admin.primary}> doesn’t want something anymore and you\'re closer than a trash can.`,
+    `Hey Hey Hey <@${message.comment.user}>! Enjoy the trash that someone else didn\'t want.`,
+    `Well aren\t you lucky <@${message.comment.user}>! You\'ve won at thing of semi-value.`,
+    `Whoa <@${message.comment.user}>!, thank you for slightly reducing the Fire Hazard around <@${params.admin.primary}>`
   ]
   var index = Math.floor((Math.random() * 4) + 0)
   return phrases[index]
@@ -75,21 +79,21 @@ function randomWinningPhrase (message) {
 function sendMessage (bot, text) {
   bot.say({
     text: text,
-    channel: postChannel
+    channel: params.postChannel
   })
 }
 
 function handleDirectAction (bot, message) {
-  if (message.user == admin1 || message.user == admin2) {
+  if (message.user === params.admin.primary || message.user === params.admin.secondary) {
     if (message.text.toUpperCase().indexOf('RESET') > -1) {
-      nolimit = new NoLimit({ filename: filename})
+      nolimit = new NoLimit({ filename: params.fileName })
       sendMessage(bot, 'All Dibsabilities have been reset.')
     }
   }
-  if (validateUserDibsabilityDM (message)) {
-    sendMessage(bot, '<@' + message.user + '>, you sure can dibs-a-bot. Dont forget you only get one. Once thats gone you must wait for the boss to give you the green light.')
+  if (validateUserDibsabilityDM(message)) {
+    sendMessage(bot, `<@${message.user}>, you sure can dibs-a-bot. Dont forget you only get one. Once thats gone you must wait for the boss to give you the green light.`)
   } else {
-    sendMessage(bot, 'Sorry <@' + message.user + '>, you cant dibs-a-bot until the boss says so, and right now he says no.')
+    sendMessage(bot, `Sorry <@${message.user}>, you cant dibs-a-bot until the boss says so, and right now he says no.`)
   }
 }
 
