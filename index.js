@@ -1,3 +1,4 @@
+require('dotenv').config({silent: true})
 var path = require('path')
 var Botkit = require('botkit')
 var Store = require('jfs')
@@ -5,7 +6,7 @@ var beep = require('beepboop-botkit')
 var NoLimit = require('nolimit')
 var nolimit = new NoLimit({ filename: 'sirdibsabot'})
 var token = process.env.SLACK_TOKEN
-var postChannel = 'C0AAFTJNS'
+var postChannel = process.env.MAIN_CHANNEL
 var controller = Botkit.slackbot({
   retry: Infinity,
   debug: false
@@ -56,13 +57,13 @@ function checkStatus (bot, message, whatElse, more) {
   }
 }
 
-function randomWinningPhrase (ogMessage) {
+function randomWinningPhrase (message) {
   var phrases = [
     'Break out the BLUE LABEL!!! <@' + message.comment.user + '> is the winner.',
-    'Congrats <@' + message.comment.user + '>, <@U024H9QHP> doesn’t want something anymore and you\'re closer than a trash can.',
+    'Congrats <@' + message.comment.user + '>, ' + process.env.ADMIN1 + ' doesn’t want something anymore and you\'re closer than a trash can.',
     'Hey Hey Hey <@' + message.comment.user + '>! Enjoy the trash that someone else didn\'t want.',
     'Well aren\t you lucky <@' + message.comment.user + '>! You\'ve won at thing of semi-value.',
-    'Whoa <@' + message.comment.user + '>!, thank you for slightly reducing the Fire Hazard around <@U024H9QHP>'
+    'Whoa <@' + message.comment.user + '>!, thank you for slightly reducing the Fire Hazard around ' + process.env.ADMIN1 
   ]
   var index = Math.floor((Math.random() * 4) + 0)
   return phrases[index]
@@ -76,9 +77,9 @@ function sendMessage (bot, text) {
 }
 
 function handleDirectAction (bot, message) {
-  if (message.user == 'U09NPAG11' || message.user == 'U024H9QHP') {
+  if (message.user == process.env.ADMIN1 || message.user == process.env.ADMIN2) {
     if (message.text.toUpperCase().indexOf('RESET') > -1) {
-      nolimit = new NoLimit({ filename: 'sirdibsabot'})
+      nolimit = new NoLimit({ filename: process.env.FILENAME})
       sendMessage(bot, 'All Dibsabilities have been reset.')
     }
   }

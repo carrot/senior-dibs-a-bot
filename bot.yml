@@ -1,16 +1,37 @@
 name: Sir-Dibs-A-Bot
 description: no double Dibsabilities
 #background: resources/background.png
-#config:
- # - name: OPTION
- #   friendly_name: Some Unnecessary Option
- #   info: This is an unnecessary option
- #   default: the default value
- # - name: SECRET
- #   friendly_name: Shhhh
- #   info: This is an secret option
- #   type: secret
- #   default: not secret though
+config:
+ - name: ADMIN1
+   friendly_name: Anonymous admin 1
+   info: wouldnt you like to know
+   type: secret
+   default: xxx
+   global: true
+ - name: ADMIN2
+   friendly_name: Anonymous admin 2
+   info: wouldnt you like to know
+   type: secret
+   default: xxx
+   global: true
+ - name: MAIN_CHANNEL
+   friendly_name: main channel
+   info: wouldnt you like to know
+   type: secret
+   default: xxx
+   global: true
+ - name: TEST_CHANNEL
+   friendly_name: main channel
+   info: wouldnt you like to know
+   type: secret
+   default: xxx
+   global: true
+ - name: FILENAME
+   friendly_name: name of cached data file
+   info: wouldnt you like to know
+   type: text
+   default: xxx
+   global: true
 #screenshots:
 #  - screenshot: resources/screenshot1.png
 #  - screenshot: resources/screenshot2.jpg
