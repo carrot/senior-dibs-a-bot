@@ -1,8 +1,9 @@
 var path = require('path')
 var Botkit = require('botkit')
 var Store = require('jfs')
+var beep = require('beepboop-botkit')
 var NoLimit = require('nolimit')
-var nolimit = new NoLimit({ filename: 'sirdibsabot'})
+var nolimit = new NoLimit({ filename: process.env.FILE_NAME })
 var token = process.env.SLACK_TOKEN
 var postChannel = 'C0AAFTJNS'
 var controller = Botkit.slackbot({
@@ -30,19 +31,13 @@ if (token) {
 // connect the bot to a stream of messages
 controller.on('file_comment_added', checkStatus)
 
+controller.on('direct_mention', function (bot, message) {
+  handleDirectAction(bot, message)
+})
+
 // reply to a direct message
 controller.on('direct_message', function (bot, message) {
-  if (message.user == 'U09NPAG11' || message.user == 'U024H9QHP') {
-    if (message.text.toUpperCase().indexOf('RESET') > -1) {
-      nolimit = new NoLimit({ filename: 'sirdibsabot'})
-      sendMessage(bot, 'All Dibsabilities have been reset.')
-    }
-  }
-  if (validateUserDibsabilityDM(message)) {
-    sendMessage(bot, '<@' + message.user + '>, You sure can dibs-a-bot. Dont forget you only get one. Once thats gone you must wait for the boss to give you the green light.')
-  } else {
-    sendMessage(bot, 'Sorry <@' + message.user + '> you cant dibs-a-bot until the boss says so, and right now he says no.')
-  }
+  handleDirectAction(bot, message)
 })
 
 function checkStatus (bot, message, whatElse, more) {
@@ -51,14 +46,27 @@ function checkStatus (bot, message, whatElse, more) {
       if (validateUserDibsability(message)) {
         nolimit.stash({ key: message.file_id, value: 1 })
         nolimit.stash({ key: message.comment.user, value: 1 })
-        sendMessage(bot, 'Break out the BLUE LABEL!!! <@' + message.comment.user + '> just won something of great value. You may need to hire private security to guard your treasure. I wish you the best.')
+        sendMessage(bot, randomWinningPhrase(message))
       } else {
-        sendMessage(bot, 'Sorry <@' + message.comment.user + '>, you cant dibs-a-bot until the boss says so, and right now he says no.')
+        sendMessage(bot, `Sorry <@${message.comment.user}>, you cant dibs-a-bot until the boss says so, and right now he says no.`)
       }
     }
   } else {
-    sendMessage(bot, 'Sorry <@' + message.comment.user + '>, this item is claimed.')
+    sendMessage(bot, `Sorry <@${message.comment.user}>, this item is claimed.`)
   }
+}
+
+function randomWinningPhrase (ogMessage) {
+  var phrases = [
+    `Break out the BLUE LABEL!!! <@${ogMessage.comment.user}> is the winner.`,
+    `Break out the BLUE LABEL!!! <@${ogMessage.comment.user}> is the winner.`,
+    `Congrats <@${ogMessage.comment.user}>, <@U024H9QHP> doesn’t want something anymore and you\'re closer than a trash can.`,
+    `Hey Hey Hey <@${ogMessage.comment.user}>! Enjoy the trash that someone else didn\'t want.`,
+    `Well aren\t you lucky <@${ogMessage.comment.user}>! You\'ve won at thing of semi-value.`,
+    `Whoa <@${ogMessage.comment.user}>!, thank you for slightly reducing the Fire Hazard around <@U024H9QHP>`
+  ]
+  var index = Math.floor((Math.random() * 4) + 0)
+  return phrases[index]
 }
 
 function sendMessage (bot, text) {
@@ -66,6 +74,20 @@ function sendMessage (bot, text) {
     text: text,
     channel: postChannel
   })
+}
+
+function handleDirectAction (bot, message) {
+  if (message.user === process.env.ADMIN_USER || message.user === process.env.ADMIN_SECONDARY_USER) {
+    if (message.text.toUpperCase().indexOf('RESET') > -1) {
+      nolimit = new NoLimit({ filename: process.env.FILE_NAME })
+      sendMessage(bot, 'All Dibsabilities have been reset.')
+    }
+  }
+  if (validateUserDibsabilityDM(message)) {
+    sendMessage(bot, `<@${message.user}>, you sure can dibs-a-bot. Dont forget you only get one. Once thats gone you must wait for the boss to give you the green light.`)
+  } else {
+    sendMessage(bot, `Sorry <@${message.user}>, you cant dibs-a-bot until the boss says so, and right now he says no.`)
+  }
 }
 
 function validateUserDibsability (message) {
