@@ -2,7 +2,6 @@ require('dotenv').config({silent: true})
 var path = require('path')
 var Botkit = require('botkit')
 var Store = require('jfs')
-var beep = require('beepboop-botkit')
 var NoLimit = require('nolimit')
 var nolimit = new NoLimit({ filename: 'sirdibsabot'})
 var token = process.env.SLACK_TOKEN
@@ -28,6 +27,7 @@ if (token) {
   })
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
 } else {
+  var beep = require('beepboop-botkit')
   console.log('Starting in Beep Boop multi-team mode')
   beep.start(controller, { debug: true })
 }

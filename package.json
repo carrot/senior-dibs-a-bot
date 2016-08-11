@@ -10,10 +10,12 @@
   "author": "2020deception",
   "license": "MIT",
   "dependencies": {
-    "beepboop-botkit": "^1.4.1",
     "botkit": "0.0.15",
     "dotenv": "2.0.0",
     "jfs": "^0.2.6",
     "nolimit": "0.0.2"
+  },
+  "devDependencies": {
+    "beepboop-botkit": "^1.4.1"
   }
 }
