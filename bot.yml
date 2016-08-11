@@ -2,13 +2,13 @@ name: Sir-Dibs-A-Bot
 description: no double Dibsabilities
 #background: resources/background.png
 config:
- - name: ADMIN1
+ - name: ADMIN_PRIMARY_USER
    friendly_name: Anonymous admin 1
    info: wouldnt you like to know
    type: secret
    default: xxx
    global: true
- - name: ADMIN2
+ - name: ADMIN_SECONDARY_USER
    friendly_name: Anonymous admin 2
    info: wouldnt you like to know
    type: secret
@@ -26,7 +26,7 @@ config:
    type: secret
    default: xxx
    global: true
- - name: FILENAME
+ - name: FILE_NAME
    friendly_name: name of cached data file
    info: wouldnt you like to know
    type: text
