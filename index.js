@@ -9,6 +9,7 @@ var postChannel = process.env.MAIN_CHANNEL
 var admin1 = process.env.ADMIN1
 var admin2 = process.env.ADMIN2
 var filename = process.env.FILENAME
+var banned = process.env.BANNED_FOR_LIFE_1
 var controller = Botkit.slackbot({
   retry: Infinity,
   debug: false
@@ -63,10 +64,10 @@ function checkStatus (bot, message, whatElse, more) {
 function randomWinningPhrase (message) {
   var phrases = [
     'Break out the BLUE LABEL!!! <@' + message.comment.user + '> is the winner.',
-    'Congrats <@' + message.comment.user + '>, ' + admin1 + ' doesn’t want something anymore and you\'re closer than a trash can.',
+    'Congrats <@' + message.comment.user + '>, <@' + admin1 + '> doesn’t want something anymore and you\'re closer than a trash can.',
     'Hey Hey Hey <@' + message.comment.user + '>! Enjoy the trash that someone else didn\'t want.',
     'Well aren\'t you lucky <@' + message.comment.user + '>! You\'ve won at thing of semi-value.',
-    'Whoa <@' + message.comment.user + '>! Thank you for slightly reducing the Fire Hazard around ' + admin1
+    'Whoa <@' + message.comment.user + '>! Thank you for slightly reducing the Fire Hazard around <@' + admin1 + '>'
   ]
   var index = Math.floor((Math.random() * 4) + 0)
   return phrases[index]
@@ -94,10 +95,21 @@ function handleDirectAction (bot, message) {
 }
 
 function validateUserDibsability (message) {
+  if (message.comment.user == banned) {
+    codeNameHairyMother(message.comment.user)
+  }
   return (!nolimit.fetch({ key: message.comment.user }) || nolimit.fetch({ key: message.comment.user }) === 0)
 }
 
+function codeNameHairyMother(user) {
+  sendMessage(bot, 'LOL <@' + user + '>, aren\'t you leaving?? Why you wanna leave with our stuff too?? Not happening broham. You\'re finished in this town. No more dibsing for you ever ever ever ever ever again. Everytime you ask you will get the same response because i don\'t even have time to make other slick repsonses and reubbutles to your clever statements, you handsome little devil. Run along now, chop chop...')
+
+}
+
 function validateUserDibsabilityDM (message) {
+  if (message.user == banned) {
+    codeNameHairyMother(message.user)
+  }
   return (!nolimit.fetch({ key: message.user }) || nolimit.fetch({ key: message.user }) === 0)
 }
 

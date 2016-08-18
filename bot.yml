@@ -14,6 +14,12 @@ config:
    type: secret
    default: xxx
    global: true
+ - name: BANNED_FOR_LIFE_1
+   friendly_name: Banned 1
+   info: wouldnt you like to know
+   type: secret
+   default: xxx
+   global: true
  - name: MAIN_CHANNEL
    friendly_name: main channel
    info: wouldnt you like to know
