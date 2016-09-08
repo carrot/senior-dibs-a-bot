@@ -66,7 +66,7 @@ function randomWinningPhrase (message) {
     'Break out the BLUE LABEL!!! <@' + message.comment.user + '> is the winner.',
     'Congrats <@' + message.comment.user + '>, <@' + admin1 + '> doesn’t want something anymore and you\'re closer than a trash can.',
     'Hey Hey Hey <@' + message.comment.user + '>! Enjoy the trash that someone else didn\'t want.',
-    'Well aren\'t you lucky <@' + message.comment.user + '>! You\'ve won at thing of semi-value.',
+    'Well aren\'t you lucky <@' + message.comment.user + '>! You\'ve won a thing of semi-value.',
     'Whoa <@' + message.comment.user + '>! Thank you for slightly reducing the Fire Hazard around <@' + admin1 + '>'
   ]
   var index = Math.floor((Math.random() * 4) + 0)
